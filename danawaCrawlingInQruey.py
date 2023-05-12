@@ -6,6 +6,14 @@ import time
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 from selenium.common import NoSuchElementException
+import pymysql
+
+db = pymysql.connect(host='localhost', port=3306, user='root', password='1234')  #in db
+
+curser = db.cursor()
+sql = "insert into crawler.danawacrawler " \
+      "(name, price, `option`) values (%s, %s, %s)"   #값 입력 구분
+
 
 def main():
     option = options.Options()
@@ -42,11 +50,14 @@ def main():
                         .find_element(By.TAG_NAME, "a")
                     option = item.find_element(By.CLASS_NAME,
                                                "memory_sect").text
-                    if '1위' in option :
-                        option = option.replace("1위 ","")
+                    if '1위' in option:
+                        option = option.replace("1위 ", "")
                     if '2위' in option:
                         option = option.replace("2위 ", "")
-                    print(name, price.text,option)
+                    curser.execute(sql, (name, price.text, option))  # 값 집어넣기
+                    db.commit();
+
+                    print(name, price.text, option)
 
 
 if __name__ == '__main__':
