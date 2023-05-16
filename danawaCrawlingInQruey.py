@@ -8,16 +8,16 @@ from selenium.webdriver.common.keys import Keys
 from selenium.common import NoSuchElementException
 import pymysql
 
-db = pymysql.connect(host='localhost', port=3306, user='root', password='1234')  #in db
+db = pymysql.connect(host='localhost', port=3306, user='root', password='1234')  # in db
 
 curser = db.cursor()
 sql = "insert into crawler.danawacrawler " \
-      "(name, price, `option`) values (%s, %s, %s)"   #값 입력 구분
+      "(name, price, `option`) values (%s, %s, %s)"   # 값 입력 구분
 
 
 def main():
     option = options.Options()
-    option.add_experimental_option('detach',True)
+    option.add_experimental_option('detach', True)
     service = ChromeService(executable_path=ChromeDriverManager().install())
     driver = webdriver.Chrome(service=service,
                               options=option)
@@ -54,7 +54,7 @@ def main():
                         option = option.replace("1위 ", "")
                     if '2위' in option:
                         option = option.replace("2위 ", "")
-                    curser.execute(sql, (name, price.text, option))  # 값 집어넣기
+                    curser.execute(sql, (name, price.text, option))  # 값 집어 넣기
                     db.commit();
 
                     print(name, price.text, option)
